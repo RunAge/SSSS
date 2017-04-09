@@ -7,3 +7,4 @@ Set authkey in index.js
 
 
 Change public/index.html
+Make ss dir in public/
