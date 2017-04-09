@@ -1,0 +1,2 @@
+# SSSS
+Simple ScreenShot Server
