@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ss.kamide.re</title>
+  </head>
+  <body>
+    <pre>
+-[] INFO
+  ]
+  ] SSSS - Simple ScreenShot Server
+  ] contact: ss@kamide.re
+  ] admin: RunAge
+  ] max upload size: 20mb
+  ] allowed file types: png, apng, jpg, jpeg, webp, webm, bmp, gif
+  ]
+-[]
+
+-[] FAQ
+  ]
+  ] Q: How long screenshot will be accessible?
+  ] A: All screenshot will be not accessible after 2h.
+  ]
+  ] Q: Where can I send report/delete request?
+  ] A: ss@kamide.re
+  ]
+  ] Q: Sauce?
+  ] A: http://github.com/RunAge (prob :P)
+  ]
+-[]
+
+-[] ShareX config
+  {
+    "Name": "SSSS kamide.re",
+    "DestinationType": "ImageUploader",
+    "RequestType": "POST",
+    "RequestURL": "http://ss.kamide.re/up",
+    "FileFormName": "file",
+    "Headers": {
+      "uploadauthkey": "AUTHKEY"
+    },
+    "ResponseType": "Text",
+    "URL": "$json:url$"
+  }
+-[]
+    </pre>
+  </body>
+</html>
