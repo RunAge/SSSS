@@ -55,14 +55,12 @@ server.on('listening', () => {
 });
 
 let unauthorizedResponds = [
-  "No chyba nie cwelu!",
   "Czy coś cie boli?",
   "Spróbuj jeszcze raz!",
   "Emm... Dzien Dobry!",
   "Nie lubie cie!",
   "FOCH z przytupem",
   "Moze w coś zagramy?",
-  "Ale jesteś glupi.",
   "Ojoj link spadł z rowerka.",
   "FORAMTTTTTT!!!!!",
   "rm -rf / polecam",
