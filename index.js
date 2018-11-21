@@ -3,19 +3,17 @@ const debug = require('debug')('SSSS:index');
 const http = require('http'); // If you want use https change http to https and add lines with crt and key
 const multer  = require('multer');
 const fs = require('fs');
-//const path = require('path');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/ss/'); // place where server saving files
   },
   filename: function (req, file, cb) {
-    // [Timestamp in ms]-[Filename] ex. 124141241-Nier.png
-    cb(null, `${Date.now()}-${file.originalname}`);
+    cb(null, `${Date.now()}-${file.originalname}`); // [Timestamp in ms]-[Filename] ex. 124141241-Nier.png
   }
 });
 
-// Removing files older then 2h
+// Removing files older then 24h
 fileCleaner();
 setInterval(() => {fileCleaner()}, 60 * 60 * 1000);
 
@@ -26,14 +24,17 @@ const config = {
   origin: 'ss.kamide.re',
   allowedExt: ['png', 'apng', 'jpg', 'jpeg', 'webp', 'webm', 'bmp', 'gif'],
   maxUploadSize: 20 * 1024 * 1024,
-  authkey: '' // keyboard cat
+  authkey: '123' // keyboard cat
 }
 
-const upload = multer({ storage: storage, limits: {fileSize: config.maxUploadSize, fileFilter: fileFilter }});
+const upload = multer({ storage,
+                        limits: {
+                          fileSize: config.maxUploadSize, 
+                          fileFilter
+                        }
+                      });
 const app = express();
-const accessLogStream = fs.createWriteStream(`${__dirname}/access.log`, {flags: 'a'})
 
-app.use(require('morgan')('combined', {stream: accessLogStream}));
 app.use(express.static('public'));
 app.use(require('cors')({
   origin: config.origin,
@@ -41,8 +42,7 @@ app.use(require('cors')({
 }));
 
 app.get('/', (req, res) => res.sendFile(__dirname, 'index.html'));
-app.post('/up', authorizator, upload.single('file'), (req, res, next) => {
-  if(!next.pass) res.end();
+app.post('/up', authenticator, upload.single('file'), (req, res) => {
   // If you use SSL change http to https
   res.json({url: `http://${config.domain}/ss/${req.file.filename}`});
 });
@@ -66,14 +66,12 @@ let unauthorizedResponds = [
   "rm -rf / polecam",
 ];
 
-function authorizator(req, res, next){
+function authenticator(req, res, next){
   if(!req.headers.uploadauthkey || req.headers.uploadauthkey !== config.authkey){
     res.set("Connection", "close");
     // If authkey is missmatch server will respond with one unauthorizedResponds as url
-    return res.json({url: unauthorizedResponds[Math.floor(Math.random() * unauthorizedResponds.length)]});
-    next.pass = false;
+    return res.json({url: unauthorizedResponds[Math.floor(Math.random() * unauthorizedResponds.length)], code: 401});
   }
-  next.pass = true;
   next();
 }
 
